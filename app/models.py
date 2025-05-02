@@ -2,6 +2,7 @@
 
 from pydantic import BaseModel
 
+
 class TokenResponse(BaseModel):
     """
     Response model for the OAuth token endpoint.

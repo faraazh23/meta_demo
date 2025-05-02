@@ -55,4 +55,3 @@ def test_insights_invalid_token():
     )
     assert resp.status_code == 401
     assert resp.json()["detail"] == "Invalid token"
-    
