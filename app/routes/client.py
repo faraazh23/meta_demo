@@ -8,6 +8,7 @@ from app.models import TokenResponse, Insight
 
 router = APIRouter(prefix="/client", tags=["client"])
 
+
 @router.get("/insights/{object_id}", response_model=list[Insight])
 async def fetch_insights(object_id: str, metric: str):
     """
@@ -42,7 +43,9 @@ async def fetch_insights(object_id: str, metric: str):
             )
             insights_resp.raise_for_status()
         except httpx.HTTPStatusError as exc:
-            raise HTTPException(status_code=502, detail="Insights service error") from exc
+            raise HTTPException(
+                status_code=502, detail="Insights service error"
+            ) from exc
 
         data = insights_resp.json()
         return [Insight(**item) for item in data]

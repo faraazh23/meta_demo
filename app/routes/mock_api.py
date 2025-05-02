@@ -8,6 +8,7 @@ from app.models import TokenResponse, Insight
 
 router = APIRouter(tags=["mock"])
 
+
 @router.post("/oauth/access_token", response_model=TokenResponse)
 def oauth_token(client_id: str, client_secret: str):
     """
@@ -18,6 +19,7 @@ def oauth_token(client_id: str, client_secret: str):
         raise HTTPException(status_code=401, detail="Unauthorized")
     # Return a fake access token
     return TokenResponse(access_token="mock_token_123", expires_in=3600)
+
 
 @router.get("/v14.0/{object_id}/insights", response_model=List[Insight])
 def get_insights(object_id: str, metric: str, access_token: str):
@@ -31,10 +33,4 @@ def get_insights(object_id: str, metric: str, access_token: str):
     if access_token != "mock_token_123":
         raise HTTPException(status_code=401, detail="Invalid token")
     # Return dummy data
-    return [
-        Insight(
-            name=metric,
-            period="day",
-            value=42
-        )
-    ]
+    return [Insight(name=metric, period="day", value=42)]

@@ -6,6 +6,7 @@ from app.main import app
 
 client = TestClient(app)
 
+
 def test_oauth_success():
     resp = client.post(
         "/oauth/access_token",
@@ -17,6 +18,7 @@ def test_oauth_success():
     assert isinstance(data["access_token"], str)
     assert data["expires_in"] == 3600
 
+
 def test_oauth_invalid_credentials():
     resp = client.post(
         "/oauth/access_token",
@@ -24,6 +26,7 @@ def test_oauth_invalid_credentials():
     )
     assert resp.status_code == 401
     assert resp.json()["detail"] == "Unauthorized"
+
 
 def test_insights_success():
     # first get a valid token
@@ -44,6 +47,7 @@ def test_insights_success():
     assert data[0]["name"] == "page_impressions"
     assert data[0]["period"] == "day"
     assert data[0]["value"] == 42
+
 
 def test_insights_invalid_token():
     resp = client.get(
