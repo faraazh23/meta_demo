@@ -1,0 +1,16 @@
+name: meta_demo
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - fastapi
+  - uvicorn[standard]
+  - httpx
+  - pydantic
+  - python-dotenv
+  - pip
+  - pip:
+    - slowapi
+    - pytest
+    - black
+    - flake8

@@ -1,0 +1,12 @@
+# Runtime dependencies
+fastapi==0.100.0
+uvicorn[standard]==0.23.1
+httpx==0.24.0
+pydantic==2.4.0
+python-dotenv==1.0.0
+slowapi==0.1.6
+
+# Testing & linting (if you don’t split into a separate dev file)
+pytest==7.4.0
+black==24.3.0
+flake8==6.1.0
