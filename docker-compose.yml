@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: meta-graph-demo:latest
+    env_file:
+      - .env          # loads CLIENT_ID, CLIENT_SECRET, API_URL
+    ports:
+      - "8000:8000"   # host:container
+    # Uncomment for live-reload in development:
+    # volumes:
+    #   - ./:/app
+    # command: >
+    #   sh -c "pip install --no-deps --upgrade -r requirements.txt &&
+    #          uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
