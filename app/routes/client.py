@@ -28,7 +28,10 @@ async def fetch_insights(object_id: str, metric: str):
             )
             token_resp.raise_for_status()
         except httpx.HTTPStatusError as exc:
-            raise HTTPException(status_code=502, detail="Auth service error") from exc
+            raise HTTPException(
+                status_code=502,
+                detail="Auth service error",
+            ) from exc
 
         token = TokenResponse(**token_resp.json())
 
@@ -44,8 +47,10 @@ async def fetch_insights(object_id: str, metric: str):
             insights_resp.raise_for_status()
         except httpx.HTTPStatusError as exc:
             raise HTTPException(
-                status_code=502, detail="Insights service error"
+                status_code=502,
+                detail="Insights service error",
             ) from exc
 
+        # Parse and return
         data = insights_resp.json()
         return [Insight(**item) for item in data]

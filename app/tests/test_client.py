@@ -1,6 +1,5 @@
 # app/tests/test_client.py
 
-import pytest
 from fastapi.testclient import TestClient
 from app.main import app
 
@@ -32,7 +31,13 @@ def test_client_insights_happy_path(monkeypatch):
             status_code = 200
 
             def json(self):
-                return [{"name": params["metric"], "period": "hour", "value": 7}]
+                return [
+                    {
+                        "name": params["metric"],
+                        "period": "hour",
+                        "value": 7,
+                    }
+                ]
 
             def raise_for_status(self):
                 pass
@@ -54,7 +59,9 @@ def test_client_insights_happy_path(monkeypatch):
     )
 
     # 3) Call the client endpoint
-    resp = client.get("/client/insights/xyz?metric=test_metric")
+    resp = client.get(
+        "/client/insights/xyz?metric=test_metric"
+    )
     assert resp.status_code == 200
     data = resp.json()
     assert isinstance(data, list)
@@ -65,15 +72,19 @@ def test_client_insights_happy_path(monkeypatch):
 
 def test_client_insights_auth_fail(monkeypatch):
     """
-    Simulate the token fetch failing (non‐200), so client should return 502.
+    Simulate the token fetch failing (non-200), so client returns 502.
     """
 
     def bad_oauth(url, params=None, **kwargs):
+        import httpx
+
         class FakeResp:
             status_code = 400
 
             def raise_for_status(self):
-                raise httpx.HTTPStatusError("err", request=None, response=None)
+                raise httpx.HTTPStatusError(
+                    "err", request=None, response=None
+                )
 
         return FakeResp()
 

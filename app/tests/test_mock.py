@@ -1,6 +1,5 @@
 # app/tests/test_mock.py
 
-import pytest
 from fastapi.testclient import TestClient
 from app.main import app
 
@@ -56,3 +55,4 @@ def test_insights_invalid_token():
     )
     assert resp.status_code == 401
     assert resp.json()["detail"] == "Invalid token"
+    

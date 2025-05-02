@@ -15,22 +15,41 @@ def oauth_token(client_id: str, client_secret: str):
     Mock OAuth2 token endpoint.
     Expects client_id & client_secret as query params.
     """
-    if client_id != settings.client_id or client_secret != settings.client_secret:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-    # Return a fake access token
+    if (
+        client_id != settings.client_id
+        or client_secret != settings.client_secret
+    ):
+        raise HTTPException(
+            status_code=401,
+            detail="Unauthorized",
+        )
     return TokenResponse(access_token="mock_token_123", expires_in=3600)
 
 
-@router.get("/v14.0/{object_id}/insights", response_model=List[Insight])
-def get_insights(object_id: str, metric: str, access_token: str):
+@router.get(
+    "/v14.0/{object_id}/insights",
+    response_model=List[Insight],
+)
+def get_insights(
+    object_id: str,
+    metric: str,
+    access_token: str,
+):
     """
     Mock insights endpoint.
     Expects:
       - path param: object_id (e.g. page or ad ID)
       - query params: metric, access_token
     """
-    # Check token
     if access_token != "mock_token_123":
-        raise HTTPException(status_code=401, detail="Invalid token")
-    # Return dummy data
-    return [Insight(name=metric, period="day", value=42)]
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid token",
+        )
+    return [
+        Insight(
+            name=metric,
+            period="day",
+            value=42,
+        )
+    ]
