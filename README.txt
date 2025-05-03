@@ -31,6 +31,7 @@ What’s in this README
    ├── Dockerfile
    ├── requirements.txt
    ├── .env.example
+   ├── .flake8
    ├── README.txt
    ├── app/
    │   ├── main.py
