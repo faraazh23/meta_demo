@@ -14,9 +14,6 @@ def test_client_insights_happy_path(monkeypatch):
 
     # 1) Patch the OAuth endpoint to return a custom token payload
     async def fake_oauth(*args, **kwargs):
-        params = kwargs.get("params", {})
-
-        
         class FakeResp:
             status_code = 200
 
@@ -32,7 +29,6 @@ def test_client_insights_happy_path(monkeypatch):
     async def fake_insights(*args, **kwargs):
         params = kwargs.get("params", {})
 
-        
         class FakeResp:
             status_code = 200
 
@@ -50,17 +46,12 @@ def test_client_insights_happy_path(monkeypatch):
 
         return FakeResp()
 
-    # Apply the monkeypatch to httpx.AsyncClient methods
     import httpx
 
-    
     monkeypatch.setattr(httpx.AsyncClient, "post", fake_oauth)
     monkeypatch.setattr(httpx.AsyncClient, "get", fake_insights)
 
-    # 3) Call the client endpoint
-    resp = client.get(
-        "/client/insights/xyz?metric=test_metric"
-    )
+    resp = client.get("/client/insights/xyz?metric=test_metric")
     assert resp.status_code == 200
     data = resp.json()
     assert isinstance(data, list)
@@ -73,7 +64,6 @@ def test_client_insights_auth_fail(monkeypatch):
     """
     Simulate the token fetch failing (non-200), so client returns 502.
     """
-
     async def bad_oauth(*args, **kwargs):
         import httpx
 
@@ -88,6 +78,7 @@ def test_client_insights_auth_fail(monkeypatch):
         return FakeResp()
 
     import httpx
+
     monkeypatch.setattr(httpx.AsyncClient, "post", bad_oauth)
 
     resp = client.get("/client/insights/123?metric=foo")
